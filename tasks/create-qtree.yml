@@ -1,0 +1,18 @@
+---
+- name: Create Queue Tree(s)
+  community.routeros.command:
+    commands:
+      - /queue tree add bucket-size=4 comment="<<<<<< download" max-limit="{{ DnlMaxLimit }}" name=qtree-dnl parent=global queue=ethernet-default
+      - /queue tree add bucket-size=4 comment=">>>>>> upload" max-limit="{{ UplMaxLimit }}" name=qtree-upl parent=ether1 queue=pcq-upload-default
+      - /queue tree add bucket-size=1 limit-at=9M max-limit=1024M name=qdnl-critical packet-mark=PMPR02 parent=qtree-dnl priority=2 queue=pcq-download-default
+      - /queue tree add bucket-size=0.5 limit-at=6M max-limit=1024M name=qdnl-best-effort packet-mark=PMPR04 parent=qtree-dnl priority=4 queue=pcq-download-default
+      - /queue tree add bucket-size=2 limit-at=4M max-limit=1024M name=qdnl-priority packet-mark=PMPR01 parent=qtree-dnl priority=1
+      - /queue tree add bucket-size=2 limit-at=256k max-limit=1024M name=qupl-priority packet-mark=PMPR01 parent=qtree-upl priority=1
+      - /queue tree add bucket-size=0.5 limit-at=128k max-limit=1024M name=qupl-best-effort packet-mark=PMPR04 parent=qtree-upl priority=4 queue=pcq-upload-default
+      - /queue tree add bucket-size=1 limit-at=1536k max-limit=1024M name=qupl-critical packet-mark=PMPR02 parent=qtree-upl priority=2 queue=pcq-upload-default
+      - /queue tree add limit-at=1M max-limit=1024M name=qdnl-big-bytes packet-mark=PMPRBB parent=qtree-dnl priority=7 queue=pcq-download-default
+      - /queue tree add limit-at=64k max-limit=1024M name=qupl-big-bytes packet-mark=PMPRBB parent=qtree-upl priority=7 queue=pcq-upload-default
+      - /queue tree add name=qdnl-unmarked packet-mark=no-mark parent=qtree-dnl queue=pcq-download-default
+      - /queue tree add name=qupl-unmarked packet-mark=no-mark parent=qtree-upl queue=pcq-upload-default
+      - /queue tree add bucket-size=0.5 limit-at=6M max-limit=1024M name=qdnl-important packet-mark=PMPR03 parent=qtree-dnl priority=3
+      - /queue tree add bucket-size=0.5 limit-at=512k max-limit=1024M name=qupl-important packet-mark=PMPR03 parent=qtree-upl priority=3

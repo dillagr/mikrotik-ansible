@@ -1,0 +1,13 @@
+---
+- name: Create Group "api-only"
+  community.routeros.command:
+    commands:
+      - /user group remove [/user group find name="api-only"]
+      - /user group add name="api-only" policy="read,write,policy,password,sensitive,api"
+
+
+- name: Create User "mikhmon"
+  community.routeros.command:
+    commands:
+      - /user remove name="mikhmon"
+      - /user add name="mikhmon" password="{{ MikhmonPass }}" group="api-only"

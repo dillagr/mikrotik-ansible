@@ -1,0 +1,17 @@
+---
+- name: Disable Service(s)
+  community.routeros.command:
+    commands:
+      - /ip service set ftp,telnet disabled=yes
+
+
+- name: Disable Firewall Service-Port(s)
+  community.routeros.command:
+    commands:
+      - /ip firewall service-port set ftp,tftp,irc,h323,sip,pptp,udplite,dccp,sctp disabled=yes
+
+
+- name: Disable Bandwidth Server
+  community.routeros.command:
+    commands:
+      - /tool bandwidth-server set enabled=no

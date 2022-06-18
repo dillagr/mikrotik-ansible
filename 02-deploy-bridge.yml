@@ -1,0 +1,28 @@
+---
+- name: 02 Mikrotik Deploy Bridge
+  hosts: mikrotik
+  connection: network_cli
+  gather_facts: false
+  become: false
+
+  vars:
+    ansible_network_os: routeros
+    ansible_ssh_port: 2222
+
+  vars_files:
+    - vars/config.yml
+    - vars/creds.yml
+
+  tasks:
+
+    ## import task for system information
+    #- import_tasks: tasks/system-info.yml
+
+    ## import task to secure-services
+    - import_tasks: tasks/secure-services.yml
+
+    ## import task to disable-services
+    - import_tasks: tasks/disable-services.yml
+
+    ## import task for system information
+    # - import_tasks: tasks/system-info.yml

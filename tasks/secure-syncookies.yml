@@ -1,0 +1,5 @@
+---
+- name: TCP-SYN Cookies
+  community.routeros.command:
+    commands:
+      - /ip settings set rp-filter=strict tcp-syncookies=yes

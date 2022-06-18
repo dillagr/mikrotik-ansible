@@ -1,0 +1,33 @@
+---
+- name: "01 Mikrotik Initial Setup"
+  hosts: mikrotik
+  connection: network_cli
+  gather_facts: false
+  become: false
+
+  vars_files:
+    - vars/config.yml
+    - vars/creds.yml
+
+  vars:
+    ansible_network_os: routeros
+    ansible_user: "{{ AdminUser1 }}"
+    ansible_ssh_pass: "{{ AdminPass1 }}"
+    ansible_ssh_port: "{{ AdminPort}} "
+
+  tasks:
+
+    ## import task to secure-services
+    - import_tasks: tasks/secure-services.yml
+
+    ## import task for interface-lists
+    - import_tasks: tasks/interface-lists.yml
+
+    ## import task to disable-services
+    - import_tasks: tasks/disable-services.yml
+
+    ## import task for queue tree (QoS)
+    - import_tasks: tasks/create-qtree.yml
+
+    ## import task for system information
+    - import_tasks: tasks/secure-syncookies.yml

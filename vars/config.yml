@@ -1,0 +1,10 @@
+---
+## unencrypted-configuration variables
+CIDRBLCK: "10.11.1.0/24"
+
+## bandwidth limits
+UplMaxLimit: 196M
+DnlMaxLimit: 512M
+
+## the path to the restore-default-script
+RestoreDefault: https://raw.githubusercontent.com/dillagr/mikrotik-ansible/master/restore-default.rsc

@@ -1,0 +1,45 @@
+---
+- name: "00 Reset Default Configuration"
+  hosts: mikrotik
+  connection: network_cli
+  gather_facts: false
+  become: false
+
+  vars_files:
+    - vars/config.yml
+    - vars/creds.yml
+
+  vars:
+    ansible_network_os: routeros
+    ansible_user: "{{ DefaultUser }}"
+    ansible_ssh_pass: "{{ DefaultPass }}"
+    ansible_ssh_port: "{{ DefaultPort }}"
+
+
+  handlers:
+    - name: reboot mikrotik
+      community.routeros.command:
+        commands:
+          - :execute { /system reboot }
+
+
+  tasks:
+
+    ## import task for creating additional "admin" users
+    - import_tasks: tasks/system-users.yml
+
+
+    ## download script from internet
+    - name: Download restore-default script
+      community.routeros.command:
+        commands:
+          - /tool fetch url="{{ RestoreDefault }}" mode=https dst-path=flash/restore-default.rsc
+
+
+    ## import task to restore defaults
+    - name: Reset Default Configuration
+      community.routeros.command:
+        commands:
+          - :execute { /system reset-configuration keep-users=yes skip-backup=yes no-defaults=yes run-after-reset=flash/restore-default.rsc }
+      # just in case it doesn't automatically reboot, when it should
+      notify: reboot mikrotik

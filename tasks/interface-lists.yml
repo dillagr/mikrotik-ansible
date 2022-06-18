@@ -1,0 +1,28 @@
+---
+- name: Create List(s)
+  community.routeros.command:
+    commands:
+      - /interface list add comment=defconf name=WAN
+      - /interface list add comment=defconf name=LAN
+      - /interface list add comment=custom exclude=WAN name=__SECURE
+
+
+- name: Add Interface(s) to WAN List
+  community.routeros.command:
+    commands:
+      - /interface list member add comment=defconf interface=ether1 list=WAN
+
+
+- name: Add Interface(s) to LAN List
+  community.routeros.command:
+    commands:
+      - /interface list member add comment=defconf interface=bridge list=LAN
+
+
+- name: Add Interface(s) to __SECURE List
+  community.routeros.command:
+    commands:
+      - /interface list member add interface=[/interface ethernet find default-name=ether2] list=__SECURE
+      - /interface list member add interface=[/interface ethernet find default-name=ether3] list=__SECURE
+      - /interface list member add interface=[/interface ethernet find default-name=ether4] list=__SECURE
+      - /interface list member add interface=[/interface ethernet find default-name=ether5] list=__SECURE

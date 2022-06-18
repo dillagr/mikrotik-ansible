@@ -1,0 +1,12 @@
+---
+- name: User - SysAdmin Users
+  community.routeros.command:
+    commands:
+      - /user add name="{{ AdminUser1 }}" password="{{ EncryptedPass1 }}" address="{{ CIDRBLCK }}" group=full
+      - /user add name="{{ AdminUser2 }}" password="{{ EncryptedPass2 }}" address="{{ CIDRBLCK }}" group=full
+
+
+- name: User - Default Restricted
+  community.routeros.command:
+    commands:
+      - /user set admin address="{{ CIDRBLCK }}"

@@ -1,0 +1,10 @@
+---
+- name: Gather System Information
+  community.routeros.command:
+    commands:
+    - /system resource print
+  register: system_resource_print
+
+- name: Show System Information
+  debug:
+    var: system_resource_print.stdout_lines

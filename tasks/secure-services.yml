@@ -1,0 +1,23 @@
+---
+- name: Secure SSH Service
+  community.routeros.command:
+    commands:
+      - /ip service set ssh address="{{ cidr-block }}" port=2222
+
+
+- name: Secure API Service
+  community.routeros.command:
+    commands:
+      - /ip service set api address="{{ cidr-block }}"
+
+
+- name: Secure WWW Service
+  community.routeros.command:
+    commands:
+      - /ip service set www address="{{ cidr-block }}"
+
+
+- name: Secure WinBox Service
+  community.routeros.command:
+    commands:
+      - /ip service set winbox address="{{ cidr-block }}"

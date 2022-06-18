@@ -1,0 +1,15 @@
+---
+- name: Create Bridge
+  community.routeros.command:
+    commands:
+      - /interface bridge remove [/interface bridge find name=bridge]
+      - /interface bridge add add-dhcp-option82=yes auto-mac=yes comment=defconf dhcp-snooping=yes name=bridge
+
+
+- name: Add Port(s) to Bridge
+  community.routeros.command:
+    commands:
+      - /interface bridge port add bridge=bridge interface=[/interface ethernet find default-name=ether2]
+      - /interface bridge port add bridge=bridge interface=[/interface ethernet find default-name=ether3]
+      - /interface bridge port add bridge=bridge interface=[/interface ethernet find default-name=ether4]
+      - /interface bridge port add bridge=bridge interface=[/interface ethernet find default-name=ether5]
