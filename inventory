@@ -1,3 +1,7 @@
-[mikrotik]
-192.168.88.1
-#10.1.1.1
+[mikrotik_routers]
+mikrotik ansible_ssh_host=192.168.88.1
+
+[mikrotik_routers:vars]
+ansible_network_os=routeros
+ansible_connection=network_cli
+ansible_python_interpreter=/opt/bin/python3
