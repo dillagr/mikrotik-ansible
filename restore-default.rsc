@@ -1,12 +1,12 @@
 ##
 ## basic-default-configuration-to-execute-after-reset
 ## author: Great D Dilla
-## https://github.com/dillagr
+## https://github.com/dillagr/mikrotik-ansible
 ##
 ## NOTES: tested on Mirktok RB750Gr3 (hEX) and Mikrotik RBD52uG (hAP AC^2)
 
 ## delay.. to ensure Mikrotik has booted
-## without this, it's hit or miss (more miss )
+## without this, it's hit or miss (more miss)
 /delay delay-time=15s
 
 
@@ -19,11 +19,12 @@
 /interface bridge add add-dhcp-option82=yes admin-mac=00:0C:29:1E:FF:52 auto-mac=no comment=defconf \
     dhcp-snooping=yes name=bridge
 /interface bridge add comment=router-id disabled=yes name=lo1
-## add-physical-interfaces
-/interface bridge port add bridge=bridge interface=[ /interface ethernet find default-name=ether2 ] 
-/interface bridge port add bridge=bridge interface=[ /interface ethernet find default-name=ether3 ] 
-/interface bridge port add bridge=bridge interface=[ /interface ethernet find default-name=ether4 ] 
-/interface bridge port add bridge=bridge interface=[ /interface ethernet find default-name=ether5 ] 
+## add-physical-interfaces, scripted since we don't know how many ethernet ports the device has
+:foreach id in=[/interface ethernet find] do={ 
+    :local iface [/interface ethernet get $id name]; 
+    if ( "$iface" != "ether1" ) do={ /interface bridge port add bridge=bridge interface=$iface }
+    }
+
 
 
 ## WAN interface, ether1
@@ -48,4 +49,4 @@
 
 /ip pool add comment=DOT11 name=DOT11 ranges=10.11.1.11-10.11.1.49
 /ip dhcp-server add add-arp=yes address-pool=DOT11 always-broadcast=yes disabled=no interface=bridge \
-    lease-time=2h name=DHCP01 use-framed-as-classless=no
+    lease-time=2h name=DHCP11
