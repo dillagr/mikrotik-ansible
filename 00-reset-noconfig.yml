@@ -10,7 +10,6 @@
     - vars/creds.yml
 
   vars:
-    ansible_network_os: routeros
     ansible_user: "{{ DefaultUser }}"
     ansible_ssh_pass: "{{ DefaultPass }}"
     ansible_ssh_port: "{{ DefaultPort }}"
